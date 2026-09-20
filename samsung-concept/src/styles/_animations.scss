@@ -1,0 +1,138 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ── Keyframes ────────────────────────────────────────────────
+@keyframes float-y {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -24; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes scroll-cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+// ── Scroll reveal ────────────────────────────────────────────
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.9s $ease-out var(--d, 0ms),
+    transform 1s $ease-out var(--d, 0ms),
+    clip-path 1.2s $ease-out var(--d, 0ms);
+  will-change: opacity, transform;
+
+  &--up { transform: translate3d(0, 32px, 0); }
+  &--left { transform: translate3d(-32px, 0, 0); }
+  &--right { transform: translate3d(32px, 0, 0); }
+  &--scale { transform: scale(0.965); }
+  &--fade { transform: none; }
+
+  // Heading lines are masked individually (see .mask-line)
+  &--mask {
+    opacity: 1;
+    transform: none;
+  }
+
+  // Image scale reveal
+  &--image {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(6% 6% 6% 6% round 4px);
+    overflow: hidden;
+
+    img,
+    .lazy {
+      transform: scale(1.14);
+      transition: transform 1.6s $ease-out var(--d, 0ms), opacity 0.8s ease;
+    }
+  }
+
+  &.is-in {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  &--image.is-in {
+    clip-path: inset(0 0 0 0 round 0);
+
+    img,
+    .lazy {
+      transform: scale(1);
+    }
+  }
+}
+
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+
+  > span {
+    display: block;
+    transform: translate3d(0, 108%, 0);
+    transition: transform 1.1s $ease-out var(--d, 0ms);
+  }
+}
+
+.is-in .mask-line > span,
+.mask-line.is-in > span {
+  transform: none;
+}
+
+// ── Utilities ────────────────────────────────────────────────
+.float {
+  animation: float-y 9s ease-in-out infinite;
+}
+
+@include reduced {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal--image,
+  .reveal--image img,
+  .reveal--image .lazy {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .mask-line > span {
+    transform: none !important;
+  }
+
+  .float {
+    animation: none !important;
+  }
+}

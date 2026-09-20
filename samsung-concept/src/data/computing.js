@@ -1,0 +1,28 @@
+export const computingBlocks = [
+  {
+    id: 'book',
+    index: '01',
+    label: 'Galaxy Book',
+    title: 'The laptop that knows your phone.',
+    text: 'Galaxy Book brings Windows to the Galaxy ecosystem. Alongside a Galaxy phone or tablet, supported devices offer connected experiences designed to keep your work moving between screens.',
+    points: ['Runs Windows', 'Quick Share between Galaxy devices', 'Multi Control across supported Galaxy devices'],
+    image: 'galaxy-book6-pro',
+    imageAlt: 'Galaxy Book6 Pro',
+    scene: 'scene-work',
+    to: '/galaxy-book',
+    cta: 'Explore Galaxy Book',
+  },
+  {
+    id: 'tab',
+    index: '02',
+    label: 'Galaxy Tab',
+    title: 'A canvas that goes where you go.',
+    text: 'Galaxy Tab pairs a large display with the apps and account you already use. Select Tab S models add S Pen support for handwriting, sketching and annotation.',
+    points: ['S Pen support on select models', 'Samsung DeX on supported models', 'Shares apps and account with your Galaxy phone'],
+    image: 'galaxy-tab-s11-ultra',
+    imageAlt: 'Galaxy Tab S11 Ultra',
+    scene: 'scene-galaxy',
+    to: '/tablets',
+    cta: 'Explore Galaxy Tab',
+  },
+];

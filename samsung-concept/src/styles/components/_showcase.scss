@@ -1,0 +1,584 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// ── Product showcase ────────────────────────────────────────────
+.showcase {
+  &__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    @include up(md) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  &__arrows {
+    display: flex;
+    gap: 0.5rem;
+    flex: none;
+  }
+
+  &__filters {
+    margin-bottom: 2.5rem;
+  }
+
+  &__grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__track {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0 var(--gutter) 1rem;
+    overflow-x: auto;
+    list-style: none;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__slide {
+    flex: 0 0 min(82vw, 380px);
+    scroll-snap-align: start;
+  }
+}
+
+.pcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: $radius-sm;
+  transition: transform 0.6s $ease-out;
+
+  &:focus-within {
+    @include focus-ring;
+  }
+
+  &__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 5 / 4;
+    padding: 2rem 2rem 1rem;
+    background: radial-gradient(70% 60% at 50% 58%, rgba($blue, 0.1), transparent 72%);
+
+    img {
+      width: auto;
+      max-width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 24px 30px rgba($ink, 0.25));
+      transition: transform 1s $ease-out;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem 1.5rem 1.75rem;
+  }
+
+  &__cat {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  &__desc {
+    flex: 1;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--fg);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  @include hover {
+    transform: translateY(-4px);
+
+    .pcard__media img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ── Named-model tiles ───────────────────────────────────────────
+.mgrid {
+  &__list {
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.mcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: $radius-sm;
+
+  &__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    padding: 1.25rem;
+
+    img {
+      width: auto;
+      max-width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 16px 20px rgba($ink, 0.22));
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0 1rem 1.25rem;
+  }
+
+  &__fam {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--accent);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  &:focus-within {
+    @include focus-ring;
+  }
+}
+
+// ── Story cards ─────────────────────────────────────────────────
+.scard {
+  position: relative;
+
+  &__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  &__index {
+    color: var(--fg-muted);
+  }
+
+  &__title {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  &__dek {
+    max-width: 34rem;
+    color: var(--fg-muted);
+  }
+
+  &__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--fg);
+  }
+
+  &:focus-within {
+    @include focus-ring;
+  }
+
+  &--standard &__media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    background: $ink;
+
+    img {
+      @include fill;
+      transition: transform 1.2s $ease-out;
+    }
+  }
+
+  &--standard &__title {
+    font-size: 1.6rem;
+  }
+
+  &--feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    min-height: clamp(440px, 56vw, 660px);
+    overflow: hidden;
+    background: $ink;
+    color: $white;
+    --fg-muted: rgba(255, 255, 255, 0.78);
+    --fg: #{$white};
+    --accent: #{$blue-bright};
+  }
+
+  &--feature &__media {
+    position: absolute;
+    inset: 0;
+
+    img {
+      @include fill;
+      transition: transform 1.4s $ease-out;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba($ink, 0.05) 30%, rgba($ink, 0.88) 100%);
+    }
+  }
+
+  &--feature &__body {
+    position: relative;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  &--feature &__title {
+    max-width: 30rem;
+    font-size: clamp(2rem, 4.2vw, 3.75rem);
+  }
+
+  &--compact {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--fg);
+  }
+
+  &--compact &__title {
+    font-size: 1.5rem;
+  }
+
+  @include hover {
+    .scard__media img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.disc {
+  &__head {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+
+    @include up(lg) {
+      grid-template-columns: 1.3fr 1fr;
+      align-items: end;
+      gap: 4rem;
+    }
+  }
+
+  &__grid {
+    margin: 0;
+  }
+
+  &__side {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  &__compact {
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__more {
+    margin-top: 3rem;
+  }
+}
+
+.disc-page {
+  &__title {
+    margin-bottom: 1.5rem;
+  }
+
+  &__grid {
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+// ── Find your Galaxy ────────────────────────────────────────────
+.fyg {
+  background:
+    radial-gradient(50% 50% at 90% 10%, rgba($blue, 0.28), transparent 70%),
+    $ink;
+
+  &__grid {
+    display: grid;
+    gap: 3rem;
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+
+    @include up(lg) {
+      grid-template-columns: 5fr 7fr;
+      gap: 5rem;
+    }
+  }
+
+  &__copy {
+    min-width: 0;
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .caption {
+      color: $gray-400;
+    }
+  }
+
+  &__personas {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  &__persona {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: $font-display;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: $gray-400;
+    transition: color 0.3s ease, padding-left 0.5s $ease-out;
+
+    &::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $blue-bright;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    @include hover {
+      color: $white;
+    }
+
+    &[aria-selected='true'] {
+      padding-left: 0.5rem;
+      color: $white;
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__intro {
+    margin: 0.5rem 0 1rem;
+    font-size: 1.1rem;
+    color: $gray-400;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) 44px;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: opacity 0.4s ease;
+
+    @include up(md) {
+      grid-template-columns: 88px minmax(0, 1fr) 48px;
+      gap: 1.5rem;
+    }
+
+    &.is-dim {
+      opacity: 0.4;
+    }
+  }
+
+  &__thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: $radius-sm;
+
+    img {
+      width: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__cat {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.15rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gray-400;
+  }
+
+  &__badge {
+    padding: 0.1rem 0.5rem;
+    border: 1px solid rgba($blue-bright, 0.6);
+    border-radius: $radius-pill;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: $blue-bright;
+  }
+
+  &__go {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid $line-dark;
+    border-radius: 50%;
+    transition: $t-color;
+
+    @include up(md) {
+      width: 48px;
+      height: 48px;
+    }
+
+    @include hover {
+      background: $white;
+      border-color: $white;
+      color: $ink;
+    }
+  }
+}
+
+.fyg__thumb .slot,
+.mcard__media .slot {
+  min-height: 0;
+
+  &__key {
+    display: none;
+  }
+}
+
+.fyg__thumb .slot {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.55);
+}

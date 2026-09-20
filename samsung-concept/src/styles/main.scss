@@ -1,0 +1,15 @@
+// Samsung Website Redesign Concept — unofficial, not affiliated with Samsung.
+// Global layers
+@use 'base';
+@use 'typography';
+@use 'animations';
+@use 'media';
+
+// Components
+@use 'components/ui';
+@use 'components/navbar';
+@use 'components/hero';
+@use 'components/ai';
+@use 'components/ecosystem';
+@use 'components/showcase';
+@use 'components/sections';

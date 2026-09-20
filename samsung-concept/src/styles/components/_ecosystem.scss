@@ -1,0 +1,499 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// ── Shared device node (Ecosystem + SmartThings) ────────────────
+.dcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0.75rem;
+  color: $white;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-md;
+  transition: opacity 0.5s ease, transform 0.6s $ease-out, border-color 0.3s ease, background-color 0.3s ease;
+
+  &__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 120px;
+
+    img {
+      width: auto;
+      max-width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+      transition: filter 0.5s ease, transform 0.8s $ease-out;
+    }
+  }
+
+  &__label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.86);
+  }
+}
+
+// ── Ecosystem ───────────────────────────────────────────────────
+.eco {
+  background:
+    radial-gradient(60% 50% at 50% 46%, rgba($blue, 0.3), transparent 70%),
+    $ink;
+
+  &__stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: clamp(2.5rem, 5vw, 4.5rem);
+    container-type: inline-size;
+
+    @include up(md) {
+      display: block;
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  &__lines,
+  &__pulse {
+    display: none;
+  }
+
+  @include up(md) {
+    &__lines {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    &__pulse {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 22cqw;
+      aspect-ratio: 1;
+      border: 1px solid rgba($blue-bright, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: pulse-ring 4.5s ease-out infinite;
+    }
+  }
+
+  &__orbit {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+    vector-effect: non-scaling-stroke;
+
+    &--outer {
+      stroke: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  &__edge {
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    transition: stroke 0.4s ease, stroke-width 0.4s ease;
+
+    &.is-active {
+      stroke: $blue-bright;
+      stroke-width: 1.5;
+      stroke-dasharray: 4 6;
+      animation: dash-flow 1.2s linear infinite;
+    }
+  }
+
+  &__info {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    padding-top: 2rem;
+    border-top: 1px solid $line-dark;
+
+    @include up(lg) {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  &__info-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__info-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  &__with {
+    font-size: 0.875rem;
+    color: $gray-400;
+
+    span {
+      margin-right: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: $white;
+    }
+  }
+
+  &__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: clamp(3rem, 6vw, 5rem);
+
+    @include up(md) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  &__foot-label {
+    margin-bottom: 0.75rem;
+    color: $gray-400;
+  }
+}
+
+.dcard--eco {
+  cursor: pointer;
+
+  @include down(md) {
+    &.dcard--phone {
+      grid-column: 1 / -1;
+
+      .dcard__img {
+        height: 200px;
+      }
+    }
+
+    &.is-active {
+      border-color: rgba($blue-bright, 0.7);
+      background: rgba($blue-bright, 0.08);
+    }
+
+    &.is-related {
+      border-color: rgba($blue-bright, 0.35);
+    }
+
+    &.is-dim {
+      opacity: 0.55;
+    }
+  }
+
+  @include up(md) {
+    --w: 12cqw;
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    translate: -50% -50%;
+    padding: 0;
+    border-color: transparent;
+
+    .dcard__img {
+      height: auto;
+
+      img {
+        width: var(--w);
+        height: auto;
+      }
+    }
+
+    &.dcard--phone { --w: 13cqw; z-index: 2; }
+    &.dcard--watch { --w: 12cqw; }
+    &.dcard--buds { --w: 11cqw; }
+    &.dcard--tab { --w: 20cqw; }
+    &.dcard--book { --w: 21cqw; }
+
+    &.is-related .dcard__img img {
+      transform: scale(1.03);
+    }
+
+    &.is-dim {
+      opacity: 0.35;
+    }
+
+    &.is-active {
+      z-index: 3;
+
+      .dcard__img img {
+        filter: drop-shadow(0 0 36px rgba($blue-bright, 0.55)) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+        transform: scale(1.05);
+      }
+
+      .dcard__label {
+        color: $white;
+      }
+    }
+  }
+}
+
+// ── SmartThings ─────────────────────────────────────────────────
+.st {
+  background: $ink;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, $ink 0%, rgba($ink, 0.5) 45%, $ink 100%);
+    }
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__head {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+
+    @include up(lg) {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: end;
+      gap: 4rem;
+    }
+  }
+
+  &__rooms {
+    margin-bottom: 1.5rem;
+  }
+
+  &__stage {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    container-type: inline-size;
+    overflow: hidden;
+    border: 1px solid $line-dark;
+    border-radius: 6px;
+    background: rgba($ink, 0.55);
+
+    @include up(md) {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  &__floor {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 38%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, rgba($blue-bright, 0.1), transparent);
+
+    @include up(md) {
+      height: 42%;
+    }
+  }
+
+  &__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+
+    &--desktop {
+      display: none;
+
+      @include up(md) {
+        display: block;
+      }
+    }
+
+    &--mobile {
+      @include up(md) {
+        display: none;
+      }
+    }
+  }
+
+  &__link {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    transition: stroke 0.5s ease;
+
+    &.is-on {
+      stroke: $blue-bright;
+      stroke-dasharray: 3 7;
+      animation: dash-flow 1.4s linear infinite;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-top: 2rem;
+
+    @include up(md) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+  }
+
+  &__text {
+    max-width: 40rem;
+    margin-top: 0.5rem;
+    font-family: $font-display;
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+  }
+
+  &__steps {
+    display: grid;
+    gap: 2rem;
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
+    padding: 0;
+    list-style: none;
+
+    @include up(md) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+  }
+
+  &__step {
+    padding-top: 1.5rem;
+    border-top: 1px solid $line-dark;
+
+    .h3 {
+      margin: 0.75rem 0 0.5rem;
+    }
+  }
+
+  &__step-num {
+    font-size: 0.8125rem;
+    color: $blue-bright;
+  }
+}
+
+.dcard--st {
+  position: absolute;
+  left: var(--mx);
+  top: var(--my);
+  translate: -50% -50%;
+  gap: 0.4rem;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+
+  @include up(md) {
+    left: var(--x);
+    top: var(--y);
+  }
+
+  .dcard__img {
+    height: auto;
+    width: auto;
+
+    img {
+      width: var(--w);
+      height: auto;
+    }
+  }
+
+  .dcard__label {
+    font-size: 0.6875rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    @include up(md) {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+  }
+
+  &.is-active .dcard__label {
+    opacity: 1;
+  }
+
+  &.is-off {
+    opacity: 0.25;
+    filter: saturate(0.3);
+  }
+
+  &.is-active .dcard__img img {
+    filter: drop-shadow(0 0 30px rgba($blue-bright, 0.55)) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+    transform: scale(1.05);
+  }
+
+  &.dcard--phone { --w: 20cqw; z-index: 3; }
+  &.dcard--tv { --w: 40cqw; }
+  &.dcard--fridge { --w: 26cqw; }
+  &.dcard--ac { --w: 36cqw; }
+  &.dcard--washer { --w: 28cqw; }
+  &.dcard--watch { --w: 18cqw; }
+
+  @include up(md) {
+    &.dcard--phone { --w: 9cqw; }
+    &.dcard--tv { --w: 21cqw; }
+    &.dcard--fridge { --w: 10cqw; }
+    &.dcard--ac { --w: 19cqw; }
+    &.dcard--washer { --w: 13cqw; }
+    &.dcard--watch { --w: 9cqw; }
+  }
+}
+
+// Empty slots inside interactive device nodes keep the footprint of the image they stand in for.
+.dcard .slot {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.55);
+
+  &__key {
+    display: none;
+  }
+}
+
+.dcard--eco .slot {
+  @include up(md) {
+    width: var(--w);
+    height: auto;
+    aspect-ratio: var(--slot-ratio, 1);
+  }
+}
+
+.dcard--st .slot {
+  width: var(--w);
+  height: auto;
+  aspect-ratio: var(--slot-ratio, 1);
+}

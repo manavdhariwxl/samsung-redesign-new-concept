@@ -1,0 +1,182 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+:root {
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-space: clamp(5rem, 11vw, 10.5rem);
+  --header-h: 64px;
+  --ease-out: #{$ease-out};
+  --focus: #{$blue-bright};
+  --accent: #{$blue-bright};
+
+  @include up-nav {
+    --header-h: 76px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  scrollbar-gutter: stable;
+
+  @include motion-ok {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: $font-body;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $white;
+  background: $ink;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  display: block;
+  outline: none;
+}
+
+h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+// :where keeps specificity at zero so utility classes (e.g. Bootstrap .row) still win
+:where(ul[class], ol[class]) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  @include focus-ring();
+  border-radius: 2px;
+}
+
+::selection {
+  background: $blue-bright;
+  color: $white;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  @include sr-only;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  padding: 0.75rem 1.25rem;
+  background: $white;
+  color: $ink;
+  font-weight: 600;
+  border-radius: $radius-sm;
+  transform: translateY(-200%);
+  transition: transform $dur-fast $ease-out;
+
+  &:focus {
+    transform: none;
+  }
+}
+
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+// ── Surface themes ────────────────────────────────────────────
+.theme-light {
+  --bg: #{$white};
+  --bg-alt: #{$gray-50};
+  --fg: #{$ink};
+  --fg-muted: #{$gray-600};
+  --line: #{$line-light};
+  --surface: #{$gray-100};
+  --accent: #{$blue};
+  --focus: #{$blue};
+}
+
+.theme-gray {
+  --bg: #{$gray-50};
+  --bg-alt: #{$white};
+  --fg: #{$ink};
+  --fg-muted: #{$gray-600};
+  --line: #{$line-light};
+  --surface: #{$white};
+  --accent: #{$blue};
+  --focus: #{$blue};
+}
+
+.theme-dark {
+  --bg: #{$ink};
+  --bg-alt: #{$charcoal};
+  --fg: #{$white};
+  --fg-muted: #{$gray-400};
+  --line: #{$line-dark};
+  --surface: #{$charcoal-2};
+  --accent: #{$blue-bright};
+  --focus: #{$blue-bright};
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-space);
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: clip;
+}
+
+.section--tight {
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
+}
+
+.wrap {
+  @include wrap;
+}
+
+.stack > * + * {
+  margin-top: var(--stack, 1rem);
+}

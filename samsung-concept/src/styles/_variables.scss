@@ -1,0 +1,79 @@
+// ─────────────────────────────────────────────────────────────
+// Design tokens — Samsung Website Redesign Concept (unofficial)
+// ─────────────────────────────────────────────────────────────
+@use 'sass:map';
+
+// Colour
+$white: #ffffff;
+$ink: #0a0b0e;
+$charcoal: #12141a;
+$charcoal-2: #1a1d24;
+$graphite: #262a33;
+$blue: #1428a0;
+$blue-bright: #5b7bff;
+$blue-deep: #0b1760;
+$blue-tint: #e9edff;
+$gray-50: #f7f8fa;
+$gray-100: #f0f2f5;
+$gray-200: #e3e6eb;
+$gray-300: #cdd2da;
+$gray-400: #98a0ad;
+$gray-500: #6e7684;
+$gray-600: #4c5360;
+$line-dark: rgba(255, 255, 255, 0.12);
+$line-light: rgba(10, 11, 14, 0.1);
+
+// Typography
+$font-display: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+$font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+// Breakpoints — 375 / 430 / 768 / 1024 / 1280 / 1440
+$breakpoints: (
+  xs: 375px,
+  sm: 430px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  xxl: 1440px,
+);
+$nav-breakpoint: 1200px;
+$container-max: 1440px;
+
+// Spacing scale
+$spacing: (
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 0.75rem,
+  4: 1rem,
+  5: 1.5rem,
+  6: 2rem,
+  7: 3rem,
+  8: 4rem,
+  9: 6rem,
+  10: 8rem,
+);
+
+@function space($step) {
+  @return map.get($spacing, $step);
+}
+
+// Motion
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+$dur-fast: 0.2s;
+$dur-base: 0.45s;
+$dur-slow: 0.9s;
+$t-color: color $dur-fast ease, background-color $dur-fast ease, border-color $dur-fast ease;
+
+// Elevation (used sparingly)
+$shadow-sm: 0 1px 2px rgba(10, 11, 14, 0.06);
+$shadow-md: 0 12px 32px -12px rgba(10, 11, 14, 0.22);
+$shadow-lg: 0 32px 64px -24px rgba(10, 11, 14, 0.4);
+
+// Borders & radii
+$border: 1px solid $line-light;
+$border-dark: 1px solid $line-dark;
+$radius-sm: 6px;
+$radius-md: 12px;
+$radius-lg: 20px;
+$radius-pill: 999px;
